@@ -1,0 +1,64 @@
+//JS Code for Explorance Blue (Course Evaluations)
+var BLUE_CANVAS_SETUP={connectorUrl:"https://exapppr1.njit.edu/BlueConnector/",canvasAPI:"https://njit.instructure.com",domainName:"com.explorance",consumerID:"uneAb3wY2QaWRG4D4S117w==",defaultLanguage:"en-us"},BlueCanvasJS=document.createElement("script");BlueCanvasJS.setAttribute("type","text/javascript");BlueCanvasJS.setAttribute("src","https://exapppr1.njit.edu/BlueConnector//Scripts/Canvas/BlueCanvas.min.js?"+(new Date).getTime());document.getElementsByTagName("head")[0].appendChild(BlueCanvasJS);
+
+
+//JS Code for Pronto LTI
+(function() {
+    var script = document.createElement('script');
+    script.src = `https://chat.trypronto.com/js/embedded.js?cb=${Math.round(new Date().getTime() / 1000)}`;
+    document.body.appendChild(script);
+})();
+
+
+//JS Code to Hide Delete Course and Reset Course buttons
+$(document).ready(function(){
+// Checks the page to make sure it is course settings
+if (/^\/courses\/[0-9]+\/settings$/.test(window.location.pathname)) {
+// Checks that current user role is not an admin to hide/disable options. Admins can access all settings.
+if($.inArray('admin',ENV.current_user_roles) == -1){
+// Hides course delete button
+$('a[href*=\'confirm_action?event=delete\']').hide();
+// Hides course reset button
+$('a[href*=\'/reset\']').hide();
+}
+}
+
+});
+
+/**
+// @name        Global Nav - Custom Links
+// @namespace   https://github.com/robert-carroll/ccsd-canvas
+//
+**/
+(function () {
+  'use strict';
+  // configure links
+  const links = [
+    {
+      title: 'NJIT Student Resources',
+      icon_svg: 'icon-info',
+      href: 'https://www.njit.edu/care/resources',
+      target: '_blank'
+    },
+
+{
+      title: 'Library Resources',
+      icon_svg: 'icon-educators',
+      href: 'https://library.njit.edu?utm_source=canvas&utm_medium=nav',
+      target: '_blank'
+    },//ready for another
+  ];
+  // leave this alone
+  const globalNavCustomLinks=e=>{let t=(e,t)=>{e.setAttribute("id",`global_nav_${t}_svg`),e.setAttribute("class","ic-icon-svg menu-item__icon ic-icon-svg--apps svg-icon-help ic-icon-svg-custom-tray"),e.getAttribute("height")>"26px"&&e.removeAttribute("height"),e.getAttribute("width")>"26px"&&e.removeAttribute("width")};e.forEach(e=>{const i=e.title.replace(/\W/g,"_").toLowerCase();var n=$("<li>",{id:`global_nav_${i}_link`,class:"ic-app-header__menu-list-item",html:`<a id="global_nav_${i}_link" role="button" href="${e.href}" target="${e.target}" class="ic-app-header__menu-list-link">\n            <div class="menu-item-icon-container" role="presentation"><span class="svg-${i}-holder"></span></div>\n            <div class="menu-item__text">${e.title}</div></a>`});if(1==/^icon-[a-z]/.test(e.icon_svg))n.find(`.svg-${i}-holder`).append($("<div>",{id:`global_nav_${i}_svg`,class:"menu-item-icon-container",html:`<i class="icon-line ${e.icon_svg} gnct_inst_menu_icon"></i></div>`,role:"presentation"}));else if(/^http/.test(e.icon_svg))n.find(`.svg-${i}-holder`).load(e.icon_svg,(function(){let e=$(this).find("svg")[0];t(e,i)}));else if(/^<svg/.test(e.icon_svg)){n.find(`.svg-${i}-holder`).append($(e.icon_svg));let s=n.find(`.svg-${i}-holder`).find("svg")[0];t(s,i)}$("#menu").append(n)})};
+  // handle css, you can remove or comment the next line if you're also using Global Nav Custom Tray
+  !function(){if(0==document.querySelectorAll('[data-global-nav-custom-css="set"]').length){let e={"i.gnct_inst_menu_icon:before":"font-size: 26px; width: 26px; line-height: 26px;","i.gnct_inst_menu_icon":"width: 26px; height: 26px;"};if(void 0!==e&&Object.keys(e).length>0){let t=document.createElement("style");t.setAttribute("data-global-nav-custom-css","set"),document.head.appendChild(t);let i=t.sheet;Object.keys(e).forEach((function(t){i.insertRule(`${t} { ${e[t]} }`,i.cssRules.length)}))}}}();
+  // add links to menu
+  globalNavCustomLinks(links);
+})();
+
+window.ALLY_CFG = {
+    'baseUrl': 'https://prod.ally.ac',
+    'clientId': 13273,
+    'lti13Id': '93420000000000123'
+};
+$.getScript(ALLY_CFG.baseUrl + '/integration/canvas/ally.js');
